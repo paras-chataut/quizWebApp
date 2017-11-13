@@ -1,0 +1,53 @@
+/*body{
+  background-color: #bef760;
+}*/
+.selector-for-some-widget{
+  box-sizing: content-box;
+}
+.col-sm-6 {
+	padding: 10px;
+}
+
+.process-button{
+  width: 80%;
+}
+
+.preocess{
+	margin-top: 25px;
+  margin-bottom: 35px;
+}
+.answer  {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: 80%;
+}
+.container {
+	padding:20px;
+
+}
+
+
+.hide {
+	display: none;
+}
+.show {
+	display: block;
+}
+.preocess {
+	margin-top: 25px;
+
+}
+
+.output {
+	font-size:20px;
+}
+.glyphicon-ok-circle{
+	color:#00FF64;
+}
+.glyphicon-remove-circle{
+	color:#FF0004;
+}
+.selAnswer {
+	background: #4E9267;
+}
