@@ -1,16 +1,3 @@
-*{
-	box-sizing: border-box;
-}
-body{
-	font-size:16px;
-	margin: 15px;
-}
-h1{
-	font-size: 2em;
-}
-h2{
-	font-size: 1.5em;
-}
 .selector-for-some-widget{
   box-sizing: content-box;
 }
@@ -37,7 +24,6 @@ h2{
 
 }
 
-
 .hide {
 	display: none;
 }
@@ -59,5 +45,5 @@ h2{
 	color:#FF0004;
 }
 .selAnswer {
-	background: #4E9267;
+	background: #91ffa9;
 }

@@ -1,44 +1,69 @@
-var curPage = 0,
-    correct = 0;
+var curPage = 0,correct = 0;
 var myAnswers = [];
-var myQuiz = [
-    ["What is addEventListener() used for?", 1, "attach a click event", "nothing", "never use it", "listens to HTML"],
-    ["What does DOM stand for", 1, "Document Object Model ", "Document Over Mountains", "Do Over Models", "Nothing"],
-    ["What does BOM stand for", 4, "document Object Model", "nothing", "Big Object Model", " Browser Object Model "]
-];
+var lengthofobject = Object(data.quizcontent).length;
+
 var myHeader = document.getElementById("quizeQuestion");
 var classname = document.getElementsByClassName("answer");
-var myQuestion = document.getElementById("questions");
+var option = document.getElementById("options");
 var progressBar = document.getElementById("progressBar");
-var btnNext = document.getElementById("nextBtn");
-var btnPrevious = document.getElementById("priviousBtn");
+var nextBtn = document.getElementById("nextBtn");
+var priviousBtn = document.getElementById("priviousBtn");
 checkPage();
-btnNext.addEventListener("click", moveNext);
-btnPrevious.addEventListener("click", moveBack);
-for (var i = 0; i < classname.length; i++) {
-    classname[i].addEventListener('click', myAnswer, false);
+
+nextBtn.addEventListener("click", moveNext);
+
+priviousBtn.addEventListener("click", moveBack);
+
+function capitalise(str) {
+    return str.substr(0, 1).toUpperCase() + str.substr(1);
 }
 
-function myAnswer() {
-    var idAnswer = this.getAttribute("data-id");
-    /// check for correct answer
-    myAnswers[curPage] = idAnswer;
-    if (myQuiz[curPage][1] == idAnswer) {
-        //console.log('Correct Answer');
+function endQuiz() {
+    if ((lengthofobject-1)) {
+        var output = "<div class='output'>Quiz Results<BR>";
+        var questionResult = "NA";
+        //console.log('Quiz Over');
+        for (var i = 0; i < myAnswers.length; i++) {
+            if (data.quizcontent[i].correct  == myAnswers[i]) {
+                questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
+                correct++;
+            } else {
+                questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
+            }
+            output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
+        }
+        output = output + '<p>You scored ' + correct + ' out of ' + lengthofobject + '</p></div> ';
+        document.getElementById("quizContent").innerHTML = output;
     } else {
-        //console.log('Wrong Answer');
+        //console.log('not answered');
     }
-    addBox();
 }
 
-function addBox() {
-    for (var i = 0; i < myQuestion.children.length; i++) {
-        var curNode = myQuestion.children[i];
+function checkPage(i) {
+    myHeader.innerHTML = data.quizcontent[curPage].question;
+    for (var i = 0; i < option.children.length; i++) {
+        var curNode = option.children[i];
+        curNode.childNodes[0].innerHTML = capitalise(data.quizcontent[curPage]["a"+(i+1)]);
+        //check if answered already
         if (myAnswers[curPage] == (i + 1)) {
             curNode.classList.add("selAnswer");
         } else {
             curNode.classList.remove("selAnswer");
         }
+    }
+    ///update progress bar
+    var increment = Math.ceil((curPage) / (lengthofobject) * 100);
+    progressBar.style.width = (increment) + '%';
+    progressBar.innerHTML = (increment) + '%';
+    /// add remove disabled buttons if there are no more questions in que
+    if (curPage == 0) {
+        priviousBtn.classList.add("hide");
+    } else {
+        priviousBtn.classList.remove("hide");
+    }
+    if ((curPage + 1) > (lengthofobject)) {
+      nextBtn.innerHTML = "Submit Answer";
+      nextBtn.addEventListener("click", endQuiz);
     }
 }
 
@@ -46,13 +71,14 @@ function moveNext() {
     ///check if an answer has been made
     if (myAnswers[curPage]) {
         //console.log('okay to proceed');
-        if (curPage < (myQuiz.length - 1)) {
+        if (curPage < (lengthofobject - 1)) {
             curPage++;
             checkPage(curPage);
+
         } else {
             ///check if quiz is completed
             //console.log(curPage + ' ' + myQuiz.length);
-            if (myQuiz.length >= curPage) {
+            if (lengthofobject >= curPage) {
                 endQuiz();
             } else {
                 //console.log('end of quiz Page ' + curPage);
@@ -63,66 +89,36 @@ function moveNext() {
     }
 }
 
-function endQuiz() {
-    if (myAnswers[2]) {
-        var output = "<div class='output'>Quiz Results<BR>";
-        var questionResult = "NA";
-        //console.log('Quiz Over');
-        for (var i = 0; i < myAnswers.length; i++) {
-            if (myQuiz[i][1] == myAnswers[i]) {
-                questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
-                correct++;
-            } else {
-                questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
-            }
-            output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
-        }
-        output = output + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
-        document.getElementById("quizContent").innerHTML = output;
-    } else {
-        //console.log('not answered');
+function moveBack() {
+    if (curPage > 0) {
+        curPage--;
+        checkPage(curPage);
     }
 }
 
-function checkPage(i) {
-    /// add remove disabled buttons if there are no more questions in que
-    if (curPage == 0) {
-        btnPrevious.classList.add("hide");
-    } else {
-        btnPrevious.classList.remove("hide");
-    }
-    if ((curPage + 1) < (myQuiz.length)) {
-        btnNext.classList.remove("hide");
-    } else {
-        btnNext.classList.add("hide");
-        btnFinish.classList.remove("hide");
-    }
-    myHeader.innerHTML = myQuiz[curPage][0];
-    for (var i = 0; i < myQuestion.children.length; i++) {
-        var curNode = myQuestion.children[i];
-        curNode.childNodes[1].innerHTML = capitalise(myQuiz[curPage][(i + 2)]);
-        //check if answered already
+function addBox() {
+    for (var i = 0; i < option.children.length; i++) {
+        var curNode = option.children[i];
         if (myAnswers[curPage] == (i + 1)) {
             curNode.classList.add("selAnswer");
         } else {
             curNode.classList.remove("selAnswer");
         }
     }
-    ///update progress bar
-    var increment = Math.ceil((curPage) / (myQuiz.length) * 100);
-    progressBar.style.width = (increment) + '%';
-    progressBar.innerHTML = (increment) + '%';
 }
 
-function moveBack() {
-    if (curPage > 0) {
-        curPage--;
-        checkPage(curPage);
+function myAnswer() {
+    var idAnswer = this.getAttribute("data-id");
+    /// check for correct answer
+    myAnswers[curPage] = idAnswer;
+    if (data.quizcontent[curPage].correct == idAnswer) {
+        //console.log('Correct Answer');
     } else {
-        //console.log('end of quiz Page ' + curPage);
+        //console.log('Wrong Answer');
     }
+    addBox();
 }
 
-function capitalise(str) {
-    return str.substr(0, 1).toUpperCase() + str.substr(1);
+for (var i = 0; i < classname.length; i++) {
+    classname[i].addEventListener('click', myAnswer, false);
 }
