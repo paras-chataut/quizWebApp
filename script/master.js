@@ -25,10 +25,12 @@ function endQuiz() {
         //console.log('Quiz Over');
         for (var i = 0; i < myAnswers.length; i++) {
             if (data.quizcontent[i].correct  == myAnswers[i]) {
-                questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
+                questionResult = '<i class="fa fa-check" aria-hidden="true"></i>';
+// '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
                 correct++;
             } else {
-                questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
+                questionResult = '<i class="fa fa-times" aria-hidden="true"></i>'
+                // '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
             }
             output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
         }

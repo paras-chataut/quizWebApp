@@ -38,10 +38,10 @@
 .output {
 	font-size:20px;
 }
-.glyphicon-ok-circle{
+.fa-check{
 	color:#00FF64;
 }
-.glyphicon-remove-circle{
+.fa-times{
 	color:#FF0004;
 }
 .selAnswer {
